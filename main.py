@@ -35,21 +35,94 @@ class MainScreen(Screen):
 class HeartBeatCheckScreen(Screen):
     def __init__(self, name='heart_beat_check'):
         super().__init__(name="heart_beat_check")
+        instr = Label(text="Instructions")
+        results_input = TextInput(text='Results', multiline=False, size_hint=(0.4, 0.1), pos_hint={'center_x': 0.5})
+        self.next_button = Button(text="Next", size_hint=(0.4, None), height='60sp', pos_hint={'center_x': 0.5})
+        self.next_button.on_press = self.next
+
+        line1 = BoxLayout()
+        line2 = BoxLayout(orientation="vertical", spacing=5, size_hint=(1, 0.3))
+        layout = BoxLayout(orientation="vertical", padding=5)
+
+        line1.add_widget(instr)
+        line2.add_widget(results_input)
+        line2.add_widget(self.next_button)
+        layout.add_widget(line1)
+        layout.add_widget(line2)
+
+        self.add_widget(layout)
+
+    def next(self):
+        self.manager.current = 'seat_set'
 
 
 class SeatSetScreen(Screen):
     def __init__(self, name="seat_set"):
         super().__init__(name="seat_set")
+        instr = Label(text="Instructions")
+        results_input = TextInput(text='Results', multiline=False, size_hint=(0.4, 0.1), pos_hint={'center_x': 0.5})
+        self.next_button = Button(text="Next", size_hint=(0.4, None), height='60sp', pos_hint={'center_x': 0.5})
+        self.next_button.on_press = self.next
+
+        line1 = BoxLayout()
+        line2 = BoxLayout(orientation="vertical", spacing=5, size_hint=(1, 0.3))
+        layout = BoxLayout(orientation="vertical", padding=5)
+
+        line1.add_widget(instr)
+        line2.add_widget(results_input)
+        line2.add_widget(self.next_button)
+        layout.add_widget(line1)
+        layout.add_widget(line2)
+
+        self.add_widget(layout)
+
+    def next(self):
+        self.manager.current = 'rest'
 
 
 class RestScreen(Screen):
     def __init__(self, name="rest"):
         super().__init__(name="rest")
+        instr = Label(text="Instructions")
+        results_input = TextInput(text='Results', multiline=False, size_hint=(0.4, 0.1), pos_hint={'center_x': 0.5})
+        self.next_button = Button(text="Next", size_hint=(0.4, None), height='60sp', pos_hint={'center_x': 0.5})
+        self.next_button.on_press = self.next
+
+        line1 = BoxLayout()
+        line2 = BoxLayout(orientation="vertical", spacing=5, size_hint=(1, 0.3))
+        layout = BoxLayout(orientation="vertical", padding=5)
+
+        line1.add_widget(instr)
+        line2.add_widget(results_input)
+        line2.add_widget(self.next_button)
+        layout.add_widget(line1)
+        layout.add_widget(line2)
+
+        self.add_widget(layout)
+
+    def next(self):
+        self.manager.current = 'results'
 
 
 class ResultsScreen(Screen):
     def __init__(self, name="results"):
         super().__init__(name="results")
+        instr = Label(text="Results")
+        self.next_button = Button(text="Next", size_hint=(0.4, None), height='60sp', pos_hint={'center_x': 0.5})
+        self.next_button.on_press = self.next
+
+        line1 = BoxLayout()
+        line2 = BoxLayout(orientation="vertical", spacing=5, size_hint=(1, 0.3))
+        layout = BoxLayout(orientation="vertical", padding=5)
+
+        line1.add_widget(instr)
+        line2.add_widget(self.next_button)
+        layout.add_widget(line1)
+        layout.add_widget(line2)
+        self.add_widget(layout)
+
+    def next(self):
+        self.manager.current = 'main'
 
 
 class MyApp(App):
@@ -65,3 +138,4 @@ class MyApp(App):
 
 app = MyApp()
 app.run()
+
