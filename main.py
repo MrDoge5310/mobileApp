@@ -80,7 +80,7 @@ class HeartBeatCheckScreen(Screen):
         self.add_widget(layout)
 
     def timerTick(self, dt):
-        if self.timer_value != 0:
+        if self.timer_value >= 0:
             self.timer_value -= 0.1
             self.timer.text = str(round(self.timer_value, 1))
         else:
