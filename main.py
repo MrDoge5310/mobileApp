@@ -4,14 +4,21 @@ from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
+from data import Data
+
+
+global name
+name = None
+global age
+age = None
 
 
 class MainScreen(Screen):
     def __init__(self, name='main'):
         super().__init__(name=name)
         instr = Label(text="Instructions")
-        name_input = TextInput(text='name', multiline=False, size_hint=(0.4, 0.1), pos_hint={'center_x': 0.5})
-        age_input = TextInput(text='age', multiline=False, size_hint=(0.4, 0.1), pos_hint={'center_x': 0.5})
+        self.name_input = TextInput(text='name', multiline=False, size_hint=(0.4, 0.1), pos_hint={'center_x': 0.5})
+        self.age_input = TextInput(text='age', multiline=False, size_hint=(0.4, 0.1), pos_hint={'center_x': 0.5})
         self.next_button = Button(text="Next", size_hint=(0.4, None), height='60sp', pos_hint={'center_x': 0.5})
         self.next_button.on_press = self.next
 
@@ -20,8 +27,8 @@ class MainScreen(Screen):
         layout = BoxLayout(orientation="vertical", padding=5)
 
         line1.add_widget(instr)
-        line2.add_widget(name_input)
-        line2.add_widget(age_input)
+        line2.add_widget(self.name_input)
+        line2.add_widget(self.age_input)
         line2.add_widget(self.next_button)
         layout.add_widget(line1)
         layout.add_widget(line2)
@@ -29,28 +36,50 @@ class MainScreen(Screen):
         self.add_widget(layout)
 
     def next(self):
+        name = self.name_input.text
+        age = self.age_input.text
         self.manager.current = 'heart_beat_check'
 
 
 class HeartBeatCheckScreen(Screen):
     def __init__(self, name='heart_beat_check'):
         super().__init__(name="heart_beat_check")
+
         instr = Label(text="Instructions")
-        results_input = TextInput(text='Results', multiline=False, size_hint=(0.4, 0.1), pos_hint={'center_x': 0.5})
+        self.results_input = TextInput(text='Results', multiline=False, size_hint=(0.4, 0.1), pos_hint={'center_x': 0.5})
         self.next_button = Button(text="Next", size_hint=(0.4, None), height='60sp', pos_hint={'center_x': 0.5})
+        self.start_btn = Button(text="Почати вимірювання", size_hint=(0.4, None), height='60sp', pos_hint={'center_x': 0.5})
+        self.timer = Label(text="30", size_hint=(0.1, 1))
+
         self.next_button.on_press = self.next
+        self.start_btn.on_press = self.start_timer
+
+        self.next_button.set_disabled(True)
+        self.results_input.set_disabled(True)
 
         line1 = BoxLayout()
-        line2 = BoxLayout(orientation="vertical", spacing=5, size_hint=(1, 0.3))
+        line2 = BoxLayout(orientation="vertical", spacing=5, size_hint=(1, 0.4))
+        line2_1 = BoxLayout(orientation="horizontal", size_hint=(0.4, 0.2), pos_hint={'center_x': 0.5})
         layout = BoxLayout(orientation="vertical", padding=5)
 
         line1.add_widget(instr)
-        line2.add_widget(results_input)
+
+        line2_1.add_widget(self.start_btn)
+        line2_1.add_widget(self.timer)
+
+        line2.add_widget(line2_1)
+        line2.add_widget(self.results_input)
         line2.add_widget(self.next_button)
+
         layout.add_widget(line1)
         layout.add_widget(line2)
 
         self.add_widget(layout)
+
+    def start_timer(self):
+        self.timer.text = "0"
+        self.next_button.set_disabled(False)
+        self.results_input.set_disabled(False)
 
     def next(self):
         self.manager.current = 'seat_set'
@@ -126,6 +155,10 @@ class ResultsScreen(Screen):
 
 
 class MyApp(App):
+    def __init__(self):
+        super().__init__()
+        self.data = Data()
+
     def build(self):
         sm = ScreenManager()
         sm.add_widget(MainScreen())
