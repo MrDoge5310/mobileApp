@@ -4,6 +4,7 @@ from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.clock import Clock
 from data import Data
 
 
@@ -49,7 +50,9 @@ class HeartBeatCheckScreen(Screen):
         self.results_input = TextInput(text='Results', multiline=False, size_hint=(0.4, 0.1), pos_hint={'center_x': 0.5})
         self.next_button = Button(text="Next", size_hint=(0.4, None), height='60sp', pos_hint={'center_x': 0.5})
         self.start_btn = Button(text="Почати вимірювання", size_hint=(0.4, None), height='60sp', pos_hint={'center_x': 0.5})
-        self.timer = Label(text="30", size_hint=(0.1, 1))
+        self.timer_value = 30
+        self.timer = Label(text=str(self.timer_value), size_hint=(0.1, 1))
+        self.timer_event = None
 
         self.next_button.on_press = self.next
         self.start_btn.on_press = self.start_timer
@@ -76,10 +79,18 @@ class HeartBeatCheckScreen(Screen):
 
         self.add_widget(layout)
 
+    def timerTick(self, dt):
+        if self.timer_value != 0:
+            self.timer_value -= 0.1
+            self.timer.text = str(round(self.timer_value, 1))
+        else:
+            self.next_button.set_disabled(False)
+            self.results_input.set_disabled(False)
+            return False
+
     def start_timer(self):
-        self.timer.text = "0"
-        self.next_button.set_disabled(False)
-        self.results_input.set_disabled(False)
+        self.start_btn.set_disabled(True)
+        self.timer_event = Clock.schedule_interval(self.timerTick, 0.1)
 
     def next(self):
         self.manager.current = 'seat_set'
