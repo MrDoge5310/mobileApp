@@ -8,10 +8,7 @@ from kivy.clock import Clock
 from data import Data
 
 
-global name
-name = None
-global age
-age = None
+data = Data()
 
 
 class MainScreen(Screen):
@@ -38,8 +35,14 @@ class MainScreen(Screen):
 
     def next(self):
         name = self.name_input.text
-        age = self.age_input.text
-        self.manager.current = 'heart_beat_check'
+        data.name = name
+        try:
+            age = self.age_input.text
+            self.age_input.text = "Invalid age"
+            data.age = int(age)
+            self.manager.current = 'heart_beat_check'
+        except:
+            pass
 
 
 class HeartBeatCheckScreen(Screen):
@@ -92,7 +95,14 @@ class HeartBeatCheckScreen(Screen):
         self.timer_event = Clock.schedule_interval(self.timerTick, 0.1)
 
     def next(self):
-        self.manager.current = 'set_check'
+        try:
+            res = self.results_input.text
+            self.results_input.text = 'invalid data'
+            data.write_data(int(res))
+            print(int(res))
+            self.manager.current = 'set_check'
+        except:
+            pass
 
 
 class SetCheckScreen(Screen):
@@ -141,7 +151,8 @@ class SetCheckScreen(Screen):
         self.timer_event = Clock.schedule_interval(self.timerTick, 0.1)
 
     def next(self):
-        self.manager.current = 'seat_set'
+            self.manager.current = 'seat_set'
+
 
 class SeatSetScreen(Screen):
     def __init__(self, name="seat_set"):
@@ -193,7 +204,13 @@ class SeatSetScreen(Screen):
         self.timer_event = Clock.schedule_interval(self.timerTick, 0.1)
 
     def next(self):
-        self.manager.current = 'check_rest'
+        try:
+            res = self.results_input.text
+            self.results_input.text = 'invalid data'
+            data.write_data(int(res))
+            self.manager.current = 'check_rest'
+        except:
+            pass
 
 
 class CheckRestScreen(Screen):
@@ -296,14 +313,21 @@ class RestScreen(Screen):
 
 
     def next(self):
-        self.manager.current = 'results'
+         try:
+            res = self.results_input.text
+            self.results_input.text = 'invalid data'
+            data.write_data(int(res))
+            print(int(res))
+            self.manager.current = 'results'
+         except:
+            pass
 
 
 class ResultsScreen(Screen):
     def __init__(self, name="results"):
         super().__init__(name="results")
         instr = Label(text="Results")
-        self.next_button = Button(text="Next", size_hint=(0.4, None), height='60sp', pos_hint={'center_x': 0.5})
+        self.next_button = Button(text="Почати спочатку", size_hint=(0.4, None), height='60sp', pos_hint={'center_x': 0.5})
         self.next_button.on_press = self.next
 
         line1 = BoxLayout()
