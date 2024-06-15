@@ -111,7 +111,7 @@ class SetCheckScreen(Screen):
         instr = Label(text="Зробити 30 присідань за 45 сек.")
         self.next_button = Button(text="Next", size_hint=(0.4, None), height='60sp', pos_hint={'center_x': 0.5})
         self.start_btn = Button(text="Почати вимірювання", size_hint=(0.4, None), height='60sp',pos_hint={'center_x': 0.5})
-        self.timer_value = 2
+        self.timer_value = 45
         self.timer = Label(text=str(self.timer_value), size_hint=(0.1, 1))
         self.timer_event = None
 
@@ -326,7 +326,7 @@ class RestScreen(Screen):
 class ResultsScreen(Screen):
     def __init__(self, name="results"):
         super().__init__(name="results")
-        instr = Label(text="Results")
+        self.instr = Label(text='text')
         self.next_button = Button(text="Почати спочатку", size_hint=(0.4, None), height='60sp', pos_hint={'center_x': 0.5})
         self.next_button.on_press = self.next
 
@@ -334,11 +334,15 @@ class ResultsScreen(Screen):
         line2 = BoxLayout(orientation="vertical", spacing=5, size_hint=(1, 0.3))
         layout = BoxLayout(orientation="vertical", padding=5)
 
-        line1.add_widget(instr)
+        line1.add_widget(self.instr)
         line2.add_widget(self.next_button)
         layout.add_widget(line1)
         layout.add_widget(line2)
         self.add_widget(layout)
+
+    def on_enter(self):
+        text = "Ваш стан сердцево-судинної системи " + data.calculate()
+        self.instr.text = text
 
     def next(self):
         self.manager.current = 'main'
