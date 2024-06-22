@@ -12,9 +12,9 @@ class Data:
         if 7 <= self.age <= 8:
             if result >= 21:
                 return "Низький"
-            elif 17 <= result <=20.9:
+            elif 17 <= result <= 20.9:
                 return "Задовільний"
-            elif 12 <= result <=16.9:
+            elif 12 <= result <= 16.9:
                 return "Середній"
             elif 6.5 <= result <= 11.9:
                 return "Вище середнього"
